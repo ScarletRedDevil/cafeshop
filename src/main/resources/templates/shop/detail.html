@@ -60,13 +60,16 @@
                         <p th:text="${product.detail}">Product Description</p>
                         <!-- Selectbox for psizeList -->
                         <div class="form-group">
+                           <!-- 
                             <label for="psizeSelect">Choose Size:</label>
+                            
                             <select class="form-control" id="psizeSelect">
                                 <option th:each="psize : ${product.psizeList}"
                                         th:value="${psize.psize_idx}"
                                         th:text="${psize.size_name}">Size Option
                                 </option>
                             </select>
+                             -->
                         </div>
                         <button type="button" id="bt_addCart" class="primary-btn" th:data-product-id="${product.product_idx}">카트에 담기</button>
                     </div>

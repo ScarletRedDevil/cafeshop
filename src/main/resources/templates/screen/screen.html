@@ -36,7 +36,7 @@
             <ul class="orders" id="preparing-orders">
             
                 <th:block th:each="order : ${preparingOrders}">
-                    <li class="order-item" th:text="${order.ordersummary_idx %999 +1}"></li>
+                    <li class="order-item" th:text="${order.ordersummary_idx %999}"></li>
                 </th:block>
                 
             </ul>
@@ -45,7 +45,7 @@
             <div class="title">준비 완료</div>
             <ul class="orders" id="ready-orders">
                 <th:block th:each="order : ${readyOrders}">
-                    <li class="order-item ready-order-item" th:text="${order.ordersummary_idx % 999 +1}"></li>
+                    <li class="order-item ready-order-item" th:text="${order.ordersummary_idx % 999}"></li>
                 </th:block>
             </ul>
         </div>
