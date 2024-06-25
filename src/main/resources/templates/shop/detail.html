@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ashion Template">
+    <meta name="keywords" content="Ashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ashion | Template</title>
+
+    <th:block th:replace="~{fragments/header_link :: header_link}"/>
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Offcanvas Menu Begin -->
+    <th:block th:replace="~{fragments/offcanvas :: offcanvas}"/>
+    <!-- Offcanvas Menu End -->
+
+    <!-- Header Section Begin -->
+    <th:block th:replace="~{fragments/header :: header}"/>
+    <!-- Header Section End -->
+
+    <!-- Breadcrumb Begin -->
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+                        <span>Product Detail</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Product Detail Section Begin -->
+    <section class="product-details spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <div class="product__details__pic">
+                        <div class="product__details__pic__item">
+                            <img class="product__details__pic__item--large" 
+                            	th:src="@{http://localhost:9999/product_img/{filename}(filename=${product.filename})}" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="product__details__text">
+                        <h3 th:text="${product.product_name}">Product Name</h3>
+                        <div class="product__details__price" th:text="${product.price} + '원'">Price</div>
+                        <p th:text="${product.detail}">Product Description</p>
+                        <!-- Selectbox for psizeList -->
+                        <div class="form-group">
+                            <label for="psizeSelect">Choose Size:</label>
+                            <select class="form-control" id="psizeSelect">
+                                <option th:each="psize : ${product.psizeList}"
+                                        th:value="${psize.psize_idx}"
+                                        th:text="${psize.size_name}">Size Option
+                                </option>
+                            </select>
+                        </div>
+                        <button type="button" id="bt_addCart" class="primary-btn" th:data-product-id="${product.product_idx}">카트에 담기</button>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="product__details__tab">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" role="tab">영양정보</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                                <div class="product__details__tab__desc">
+                                    <p text>준비중입니다</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Product Detail Section End -->
+
+    <!-- Instagram Begin -->
+    <th:block th:replace="~{fragments/instagram :: instagram}"/>
+    <!-- Instagram End -->
+
+    <!-- Footer Section Begin -->
+    <th:block th:replace="~{fragments/footer :: footer}"/>
+    <!-- Footer Section End -->
+
+    <!-- Search Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch">+</div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search End -->
+
+    <!-- Js Plugins -->
+    <th:block th:replace="~{fragments/plugins :: plugins}"/>
+</body>
+
+</html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#bt_addCart").click(function() {
+            var productId = $(this).data("product-id");
+            var productName = $(this).data("product-name");
+            var productPrice = $(this).data("product-price");
+            var ea = 1; // 기본적으로 수량을 1로 설정
+
+            // Form 데이터 생성
+            var formData = {
+                product_idx: productId,
+                ea: ea,
+                product_name: productName,
+                product_price: productPrice
+            };
+
+            // Ajax를 이용한 POST 요청
+            $.ajax({
+                url: '/shop/order/cart/add',
+                method: 'POST',
+                data: formData,
+                success: function(response) {
+                    alert('상품이 카트에 추가되었습니다.');
+                },
+                error: function(error) {
+                    alert('카트에 추가하는 중 오류가 발생했습니다.');
+                }
+            });
+        });
+    });
+</script>
+

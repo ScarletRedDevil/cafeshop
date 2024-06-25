@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+<mapper namespace="com.sds.cafeshop.model.order.CartDAO">
+
+<resultMap type="Cart" id="CartMap">
+		<id 			column="cart_idx" property="cart_idx"/>
+		<result 	column="ea" 			property="ea"/>
+		
+		<association
+			column="product_idx" 
+			property="product"
+			javaType="Product"
+			select="Product.select"/>			
+		
+	</resultMap>
+	<!-- 장바구니에 등록 하기 전에, 현재 로그인 한 회원이 같은 상품을 담았는지 가져오기 -->
+	<select id="selectDuplicate" parameterType="Cart" resultMap="CartMap">
+		select cart_idx, member_idx , product_idx, ea from cart 
+		where member_idx=#{member.member_idx} 
+		and product_idx=#{product.product_idx}
+	</select>
+	
+	<!-- 같은 회원이 같은 상품을 담게되면, insert 가 아니라 ea를 업데이트 시킨다 -->
+	<update id="update" parameterType="Cart">
+		update cart set ea=#{ea} 
+		where member_idx=#{member.member_idx } 
+		 and product_idx=#{product.product_idx}
+ 	</update>	
+	
+	<!-- 장바구니에 상품 등록 -->
+	<insert id="insert" parameterType="Cart">
+		insert into cart(member_idx, product_idx, ea) 
+		values(#{member.member_idx}, #{product.product_idx}, #{ea})
+	</insert>
+	
+	<!-- 1건삭제 -->
+	<delete id="delete">
+		DELETE from cart where cart_idx=#{cart_idx}
+	</delete>
+
+</mapper>

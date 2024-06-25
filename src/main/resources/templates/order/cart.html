@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ashion Template">
+    <meta name="keywords" content="Ashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ashion | Template</title>
+	
+    <th:block th:replace="~{fragments/header_link :: header_link}"/>
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+	
+    <!-- Offcanvas Menu Begin -->
+    <th:block th:replace="~{fragments/offcanvas:: offcanvas}"/>
+    <!-- Offcanvas Menu End -->
+
+    <!-- Header Section Begin -->
+        <th:block th:replace="~{fragments/header :: header}"/>
+    <!-- Header Section End -->
+	
+    <!-- Breadcrumb Begin -->
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+                        <span>Shopping cart</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Shop Cart Section Begin -->
+    <section class="shop-cart spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="shop__cart__table">
+                        <form id="form1" th:action="@{/shop/order/cart/update}" method="post">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>상품명</th>
+                                        <th>가격</th>
+                                        <th>수량</th>
+                                        <th>합계</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <th:block th:if="${#lists.isEmpty(cart)}">
+                                        <tr>
+                                            <td colspan="5">카트가 비어있습니다.</td>
+                                        </tr>
+                                    </th:block>
+                                    <th:block th:each="cartItem : ${cart}" th:if="${not #lists.isEmpty(cart)}">
+                                        <tr>
+                                            <td class="cart__product__item">
+                                                <img th:src="@{http://localhost:9999/product_img/{filename}(filename=${cartItem.product != null ? cartItem.product.filename : 'default.png'})}"
+                                                    width="55px" height="50px">
+                                                <div class="cart__product__item__title">
+                                                    <h6 th:text="${cartItem.product != null ? cartItem.product.product_name : 'Unknown Product'}">Product Name</h6>
+                                                </div>
+                                            </td>
+                                            <td class="cart__price" th:text="${cartItem.product != null ? cartItem.product.price + '원' : '0원'}">Price</td>
+                                            <td class="cart__quantity">
+                                                <div class="pro-qty">
+                                                    <input type="hidden" name="product_idx" th:value="${cartItem.product != null ? cartItem.product.product_idx : 0}">
+                                                    <input type="text" name="ea" th:value="${cartItem.ea}">
+                                                </div>
+                                            </td>
+                                            <td class="cart__total" th:text="${cartItem.product != null ? cartItem.product.price * cartItem.ea + '원' : '0원'}">Total</td>
+                                            <td class="cart__close"><span class="icon_close" th:onclick="|delCart(${cartItem.product != null ? cartItem.product.product_idx : 0})|"></span></td>
+                                        </tr>
+                                    </th:block>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="cart__btn">
+                        <a href="/main">상품 더 보기</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="cart__btn update__btn">
+                        <a href="#" onclick="updateCart()" class="primary-btn">카트 업데이트</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="discount__content">
+                    </div>
+                </div>
+                <div class="col-lg-4 offset-lg-2">
+                    <div class="cart__total__procced">
+                        <h6>카트 합계</h6>
+                        <ul>
+                            <li>총액 <span th:text="${cartTotal} + '원'"></span></li>
+                        </ul>
+                        <a th:href="@{/shop/order/checkout}" class="primary-btn" th:classappend="${#lists.isEmpty(cart) ? 'disabled' : ''}" th:onclick="|checkCartBeforeCheckout(${#lists.isEmpty(cart)})|">결제 화면으로</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Shop Cart Section End -->
+
+    <!-- Instagram Begin -->
+    <th:block th:replace="~{fragments/instagram :: instagram}"/>
+    <!-- Instagram End -->
+
+    <!-- Footer Section Begin -->
+    <th:block th:replace="~{fragments/footer :: footer}"/>
+    <!-- Footer Section End -->
+
+    <!-- Search Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch">+</div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search End -->
+
+    <!-- Js Plugins -->
+    <th:block th:replace="~{fragments/plugins :: plugins}"/>
+
+    <script type="text/javascript">
+        function updateCart() {
+            // 모든 수량 입력 필드를 가져옵니다.
+            var quantityInputs = document.querySelectorAll('input[name="ea"]');
+            
+            // 각 입력 필드를 순회하면서 상품 정보를 가져옵니다.
+            for (var i = 0; i < quantityInputs.length; i++) {
+                var input = quantityInputs[i];
+                var product_idx = input.previousElementSibling.value;
+                var ea = input.value;
+                
+                // 서버에 상품 정보를 전송합니다.
+                $.post("/shop/order/cart/update", { product_idx: product_idx, ea: ea }, function(data) {
+                    // 서버로부터 응답을 받았을 때 페이지를 새로고침합니다.
+                    location.reload();
+                });
+            }
+        }
+
+        function checkCartBeforeCheckout(isCartEmpty) {
+            if (isCartEmpty) {
+                alert("카트가 비어있습니다.");
+                event.preventDefault();  // 기본 동작을 막습니다.
+            }
+        }
+    </script>
+
+</body>
+</html>

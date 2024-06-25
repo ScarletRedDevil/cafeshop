@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ashion Template">
+    <meta name="keywords" content="Ashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>cafeapp test</title>
+
+        <th:block th:replace="~{fragments/header_link :: header_link}"/>
+    
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Offcanvas Menu Begin -->
+    <th:block th:replace="~{fragments/offcanvas:: offcanvas}"/>
+    <!-- Offcanvas Menu End -->
+
+    <!-- Header Section Begin -->
+    <th:block th:replace="~{fragments/header :: header}"/>
+    <!-- Header Section End -->
+
+
+
+<!-- Product Section Begin -->
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-4">
+                <div class="section-title">
+                    <h4>신제품</h4>
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-8">
+            <!-- 
+                <ul class="filter__controls">
+                    <li class="active" data-filter="*">All</li>
+                    <li data-filter=".women">Women’s</li>
+                    <li data-filter=".men">Men’s</li>
+                    <li data-filter=".kid">Kid’s</li>
+                    <li data-filter=".accessories">Accessories</li>
+                    <li data-filter=".cosmetic">Cosmetics</li>
+                </ul>
+             -->    
+            </div>
+        </div>
+        <div class="row property__gallery">
+            <div class="col-lg-3 col-md-4 col-sm-6 mix women" th:each="product : ${productList}">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" th:data-setbg="@{http://localhost:9999/product_img/{filename}(filename=${product.filename})}">
+                        <div class="label new">New</div>
+                        <ul class="product__hover">
+                            <li><a th:href="@{/shop/img/product/ + ${product.filename}}" class="image-popup"><span class="arrow_expand"></span></a></li>
+                            <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                            <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                        </ul>
+                    </div>
+                    <div class="product__item__text">
+                        <h6><a th:href="@{'/shop/detail?product_idx=' + ${product.product_idx}}" th:text="${product.product_name}">Product Name</a></h6>
+                        <div class="product__price" th:text="${product.price}+ '원'">Price</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Product Section End -->
+
+
+
+
+<!-- Services Section Begin -->
+<th:block th:replace="~{fragments/service :: service}"/>
+<!-- Services Section End -->
+
+<!-- Instagram Begin -->
+<th:block th:replace="~{fragments/instagram :: instagram}"/>
+<!-- Instagram End -->
+
+<!-- Footer Section Begin -->
+<th:block th:replace="~{fragments/footer :: footer}"/>
+<!-- Footer Section End -->
+
+<!-- Search Begin -->
+<div class="search-model">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="search-close-switch">+</div>
+        <form class="search-model-form">
+            <input type="text" id="search-input" placeholder="Search here.....">
+        </form>
+    </div>
+</div>
+<!-- Search End -->
+
+<!-- Js Plugins -->
+<th:block th:replace="~{fragments/plugins :: plugins}"/>
+
+</body>
+
+</html>

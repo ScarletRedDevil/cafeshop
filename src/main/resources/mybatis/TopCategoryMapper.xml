@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+<mapper namespace="com.sds.cafeshop.model.product.TopCategoryDAO">
+
+	<resultMap type="TopCategory" id="TopCategoryMap">
+		<id 			column="topcategory_idx" 	property="topcategory_idx"/>
+		<result 	column="topname" 			property="topname"/>
+		<collection 
+			column="topcategory_idx" 
+			property="subList" 
+			javaType="java.util.List"
+			ofType="SubCategory"
+			select="com.sds.cafeshop.model.product.SubCategoryDAO.selectAllByTopIdx"/>
+	</resultMap>
+	
+	<!-- 모든 카테고리 가져오기 -->
+	<select id="selectAll" resultMap="TopCategoryMap">
+		select topcategory_idx, topname from topcategory
+	</select>
+	
+	<!-- 한건 가져오기 -->
+
+</mapper>

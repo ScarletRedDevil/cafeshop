@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Shop</title>
+
+    
+</head>
+<body>
+
+    <th:block th:fragment="header">
+        <header class="header">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xl-3 col-lg-2">
+                        <div class="header__logo">
+                            <a href="/main"><img src="/shop/img/logo.png" alt=""></a>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-7">
+                        <nav class="header__menu">
+                            <ul>
+                            <li><a href="/shop/order/cart/reset" id="resetButton">초기 화면으로</a></li>
+                                <li class="active"><a href="/main">Home</a></li>
+                                <li th:each="topcategory : ${topcategoryList}">
+                                    <a th:text="${topcategory.topname}" th:href="@{/shop/drink(topcategory_idx=${topcategory.topcategory_idx})}"></a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="header__right">
+                            <ul class="header__right__widget">
+                                <li>
+	                                <a href="/shop/order/cart"><span class="icon_bag_alt"></span>
+	                                    <!-- <div class="tip">2</div> -->
+	                                </a>
+                                </li>
+                                
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="canvas__open">
+                    <i class="fa fa-bars"></i>
+                </div>
+            </div>
+        </header>
+    </th:block>
+
+</body>
+</html>
+    <script type="text/javascript">
+        function confirmReset() {
+            var r = confirm("주문을 초기화하고 처음 화면으로 이동합니다");
+            if (r == true) {
+                window.location.href = "/shop/order/cart/reset";
+            }
+        }
+    </script>
+

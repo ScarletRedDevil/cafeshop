@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+<mapper namespace="com.sds.cafeshop.model.order.OrdernumDAO">
+
+	<insert id="insertOrdernum" parameterType="map">
+        insert into ordernum (ordernum_num) VALUES (NULL);
+    </insert>
+
+    <update id="updateOrdernum" parameterType="map">
+        update ordernum set ordernum_num = #{ordernum_idx}
+    </update>
+    
+    <select id="selectLastOrdernum" resultType="Ordernum">
+    	select * from ordernum order by ordernum_idx desc limit 1;
+    </select>
+    
+</mapper>

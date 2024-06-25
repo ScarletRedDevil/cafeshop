@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주문 목록</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        .section {
+            width: 45%;
+        }
+        .title {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .orders {
+            list-style-type: none;
+            padding: 0;
+        }
+        .order-item {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="title">주문 목록</div>
+    <div class="container">
+        <div class="section">
+            <div class="title">준비 중</div>
+            <ul class="orders" id="preparing-orders">
+            
+                <th:block th:each="order : ${preparingOrders}">
+                    <li class="order-item" th:text="${order.ordersummary_idx %999 +1}"></li>
+                </th:block>
+                
+            </ul>
+        </div>
+        <div class="section">
+            <div class="title">준비 완료</div>
+            <ul class="orders" id="ready-orders">
+                <th:block th:each="order : ${readyOrders}">
+                    <li class="order-item ready-order-item" th:text="${order.ordersummary_idx % 999 +1}"></li>
+                </th:block>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Function to remove ready orders after 60 seconds
+        function removeReadyOrders() {
+            const readyOrderItems = document.querySelectorAll('.ready-order-item');
+            readyOrderItems.forEach(item => {
+                setTimeout(() => {
+                    item.remove();
+                }, 5000); // 60,000 milliseconds = 60 seconds
+            });
+        }
+
+        // Execute the function on page load
+        window.onload = removeReadyOrders;
+    </script>
+</body>
+</html>

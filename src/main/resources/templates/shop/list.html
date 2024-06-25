@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ashion Template">
+    <meta name="keywords" content="Ashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ashion | Template</title>
+
+    <th:block th:replace="~{fragments/header_link :: header_link}"/>
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Offcanvas Menu Begin -->
+    <th:block th:replace="~{fragments/offcanvas:: offcanvas}"/>
+    <!-- Offcanvas Menu End -->
+
+    <!-- Header Section Begin -->
+        <th:block th:replace="~{fragments/header :: header}"/>
+    <!-- Header Section End -->
+
+    <!-- Breadcrumb Begin -->
+    <th:block th:replace="~{fragments/breadcrumb :: breadcrumb}"/>
+    <!-- Breadcrumb End -->
+
+    <!-- Shop Section Begin -->
+    <section class="shop spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="shop__sidebar">
+                        <div class="sidebar__categories">
+                            <div class="section-title">
+                                <h4>Categories</h4>
+                            </div>
+                            <div class="categories__accordion">
+                                <div class="accordion" id="accordionExample">
+                                	<th:block th:each="topCategory : ${topcategoryList}">
+                                    <div class="card">
+                                        <div class="card-heading active">
+                                            <a data-toggle="collapse" th:href="'#collapse' + ${topCategory.topcategory_idx}" th:text="${topCategory.topname}"></a>
+                                        </div>
+                                        <div th:id="'collapse' + ${topCategory.topcategory_idx}" class="collapse" data-parent="#accordionExample">
+                                            <div class="card-body">
+                                                <ul>
+                                                    <th:block th:each="subCategory : ${topCategory.subList}">
+                                                            <li><a th:href="@{'/shop/drink?subcategory_idx=' + ${subCategory.subcategory_idx}}" th:text="${subCategory.subname}"></a></li>
+                                                        </th:block>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </th:block>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-9">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 col-sm-6 mix women" th:each="product : ${productList}">
+			                <div class="product__item">
+			                    <div class="product__item__pic set-bg" th:data-setbg="@{http://localhost:9999/product_img/{filename}(filename=${product.filename})}">
+			                        <div class="label new">New</div>
+			                        <ul class="product__hover">
+			                            <li><a th:href="@{/shop/img/product/ + ${product.filename}}" class="image-popup"><span class="arrow_expand"></span></a></li>
+			                            <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+			                            <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+			                        </ul>
+			                    </div>
+			                    <div class="product__item__text">
+			                        <h6><a th:href="@{'/shop/detail?product_idx=' + ${product.product_idx}}" th:text="${product.product_name}">Product Name</a></h6>
+			                        <div class="product__price" th:text="${product.price}+ '원'">Price</div>
+			                    </div>
+			                </div>
+			            </div>
+                        <div class="col-lg-12 text-center">
+                            <!-- <div class="pagination__option">
+                                <a href="#">1</a>
+                                <a href="#">2</a>
+                                <a href="#">3</a>
+                                <a href="#"><i class="fa fa-angle-right"></i></a>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Shop Section End -->
+
+    <!-- Instagram Begin -->
+	<th:block th:replace="~{fragments/instagram :: instagram}"/>
+    <!-- Instagram End -->
+
+    <!-- Footer Section Begin -->
+    <th:block th:replace="~{fragments/footer :: footer}"/>
+    <!-- Footer Section End -->
+
+    <!-- Search Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch">+</div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search End -->
+
+    <!-- Js Plugins -->
+	<th:block th:replace="~{fragments/plugins :: plugins}"/>
+</body>
+
+</html>

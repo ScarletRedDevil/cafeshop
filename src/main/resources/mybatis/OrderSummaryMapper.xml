@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+<mapper namespace="com.sds.cafeshop.model.order.OrderSummaryDAO">
+
+	<insert id="insert" parameterType="OrderSummary">
+		insert into ordersummary(total_buy, total_pay, ordernum_idx, paymethod_idx, orderstat_idx)
+		values(#{total_buy}, #{total_pay}, #{ordernum.ordernum_idx}, #{paymethod.paymethod_idx}, #{orderstat.orderstat_idx})
+		
+		<selectKey 
+			keyColumn="ordersummary_idx" 
+			keyProperty="ordersummary_idx"
+			resultType="int"
+			order="AFTER">
+			select last_insert_id() as ordersummary_idx
+		</selectKey>
+	</insert>
+	
+	<select id="selectByOrderStatIdx" resultType="OrderSummary">
+        select * from ordersummary where orderstat_idx = #{stat}
+    </select>
+	
+
+</mapper>

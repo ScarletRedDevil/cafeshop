@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ashion Template">
+    <meta name="keywords" content="Ashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ashion | Template</title>
+
+    <th:block th:replace="~{fragments/header_link :: header_link}" />
+</head>
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Offcanvas Menu Begin -->
+    <th:block th:replace="~{fragments/offcanvas :: offcanvas}" />
+    <!-- Offcanvas Menu End -->
+
+    <!-- Header Section Begin -->
+    <th:block th:replace="~{fragments/header :: header}" />
+    <!-- Header Section End -->
+
+    <!-- Checkout Section Begin -->
+    <section class="checkout spad">
+        <div class="container">
+            <form id="form1" class="checkout__form" th:action="@{/shop/order/payment/pay}" method="post">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <h5>주문 상세</h5>
+                        <div class="row">
+                            <!-- Billing details input fields -->
+                            <div class="col-lg-12">
+                                <h5>카트 상품</h5>
+                                <div class="checkout__order__product">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>상품명</th>
+                                                <th>가격</th>
+                                                <th>수량</th>
+                                                <th>합계</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Iterate through cart items -->
+                                            <th:block th:each="cartItem : ${cartList}">
+                                                <tr>
+                                                    <td th:text="${cartItem.product.product_name}">Product Name</td>
+                                                    <td th:text="${cartItem.product.price + '원'}">Price</td>
+                                                    <td th:text="${cartItem.ea + ' 개'}">Quantity</td>
+                                                    <td th:text="${cartItem.product.price * cartItem.ea + '원'}">Total</td>
+                                                </tr>
+                                            </th:block>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="checkout__form__input">
+                            <p>결제방법<span>*</span></p>
+                            <select name="paymethod.paymethod_idx" required>
+                                <option value="-1">결제방법 선택 ▼</option>
+                                <th:block th:each="paymethod : ${paymethodList}">
+                                    <option th:value="${paymethod.paymethod_idx}" th:text="${paymethod.payname}"></option>
+                                </th:block>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="checkout__order">
+                            <h5>주문금액</h5>
+                            <div class="checkout__order__total">
+                                <input type="hidden" name="total_buy" th:value="${cartTotal}">
+                                <input type="hidden" name="total_pay" th:value="${cartTotal}">
+                                <ul>
+                                    <li>합계 <span th:text="${cartTotal + '원'}"></span></li>
+                                </ul>
+                            </div>
+                            <button type="button" class="site-btn" th:onclick="|order(${#lists.isEmpty(cartList)})|">주문하기</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    <!-- Checkout Section End -->
+
+    <!-- Instagram Begin -->
+    <th:block th:replace="~{fragments/instagram :: instagram}" />
+    <!-- Instagram End -->
+
+    <!-- Footer Section Begin -->
+    <th:block th:replace="~{fragments/footer :: footer}" />
+    <!-- Footer Section End -->
+
+    <!-- Search Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch">+</div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search End -->
+
+    <!-- Js Plugins -->
+    <th:block th:replace="~{fragments/plugins :: plugins}" />
+
+    <script type="text/javascript">
+    function order(isCartEmpty) {
+        if (isCartEmpty) {
+            alert("카트가 비어있습니다.");
+        } else {
+            var paymethod = document.querySelector('select[name="paymethod.paymethod_idx"]').value;
+            if (paymethod == "-1") {
+                alert("결제 방법을 선택해주세요.");
+            } else {
+                if (confirm("결제하시겠습니까?")) {
+                    document.getElementById("form1").submit();
+                }
+            }
+        }
+    }
+
+    </script>
+</body>
+</html>
